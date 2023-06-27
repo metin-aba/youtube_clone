@@ -9,19 +9,9 @@ const Feed = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchFromAPI(
-          `search?part=snippet&q=${selectedCategory}`
-        );
-        // Verileri işleyin ve videos state'ini güncelleyin
-        setVideos(response.items); // Örneğin, API yanıtında items adında bir dizi olduğunu varsayalım
-      } catch (error) {
-        console.log("Hata:", error);
-      }
-    };
-
-    fetchData();
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) =>
+      setVideos(data.items)
+    );
   }, [selectedCategory]);
 
   return (
@@ -47,9 +37,14 @@ const Feed = () => {
       </Box>
 
       <Box p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
-        <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          mb={2}
+          sx={{ color: "white" }}
+        >
           {selectedCategory}
-          <span style={{ color: "#F31503" }}>  videos</span>
+          <span style={{ color: "#F31503" }}> videos</span>
         </Typography>
         <Videos videos={videos} />
       </Box>
